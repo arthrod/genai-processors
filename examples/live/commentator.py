@@ -91,7 +91,6 @@ import asyncio
 import collections
 import dataclasses
 import enum
-import random
 import re
 import time
 from typing import Any, AsyncIterable, Optional
@@ -107,6 +106,7 @@ from genai_processors.core import text
 from genai_processors.core import timestamp
 from google.genai import types as genai_types
 import numpy as np
+import secrets
 
 
 # Model to use for the live api processor.
@@ -674,7 +674,7 @@ class LiveCommentator(processor.Processor):
     # delay between any event on the video stream and the comment.
     await asyncio.sleep(max(0, at_time - time.perf_counter()))
     while True:
-      chattiness_dice = random.uniform(0, 1)
+      chattiness_dice = secrets.SystemRandom().uniform(0, 1)
       if chattiness_dice < self._chattiness:
         logging.debug(
             "%s - Triggering comment: %s ", time.perf_counter(), message
