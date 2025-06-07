@@ -892,6 +892,8 @@ def create_live_commentator(
     api_key: str,
     chattiness: float = 1.0,
     unsafe_string_list: list[str] | None = None,
+    prompt_parts: list[str] | None = None,
+    model_name: str = MODEL_LIVE,
 ) -> processor.Processor:
   r"""Creates a live commentator.
 
@@ -911,6 +913,8 @@ def create_live_commentator(
       anything that is not allowed. None by default means nothing is blocked.
       When set, the commentator will interrupt itself if the model outputs this
       string and will not output the rest of the response.
+    prompt_parts: Custom prompt parts to pass as system instructions.
+    model_name: The Gemini model to use for generating commentary.
 
   Returns:
     A live commentator processor.
@@ -963,10 +967,10 @@ def create_live_commentator(
   )
   live_api_processor = live_model.LiveProcessor(
       api_key=api_key,
-      model_name=MODEL_LIVE,
+      model_name=model_name,
       realtime_config=genai_types.LiveConnectConfig(
           tools=TOOLS,
-          system_instruction=PROMPT_PARTS,
+          system_instruction=(PROMPT_PARTS if prompt_parts is None else prompt_parts),
           output_audio_transcription={},
           realtime_input_config=genai_types.RealtimeInputConfig(
               turn_coverage="TURN_INCLUDES_ALL_INPUT"
