@@ -1,3 +1,4 @@
 gradio
 numpy
 google-genai
+python-multipart>=0.0.22 # not directly required, pinned by Snyk to avoid a vulnerability
